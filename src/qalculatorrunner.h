@@ -44,7 +44,7 @@ public Q_SLOTS:
 
 private:
     QString calculate(const QString &term);
-    void copyToClipboard(const QString &text);
+    bool copyToClipboard(const QString &text);
 };
 
 K_PLUGIN_CLASS_WITH_JSON(QalculatorRunner, "manifest.json")

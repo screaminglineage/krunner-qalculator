@@ -6,7 +6,8 @@ set -e
 if [ -d "$PWD/krunner-qalculator" ]; then
     # Update existing install
     cd krunner-qalculator/
-    git pull -f
+    git fetch origin
+    git reset --hard origin/$(git branch --show-current)
     echo "Files have been updated."
 elif [[ $(basename "$PWD") !=  "krunner-qalculator"* ]]; then
     git clone https://github.com/kas-cor/krunner-qalculator.git

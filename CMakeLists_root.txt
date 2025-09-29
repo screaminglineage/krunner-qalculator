@@ -1,0 +1,19 @@
+cmake_minimum_required(VERSION 3.16)
+
+project(krunner_qalculator_root)
+
+# Set project version
+set(PROJECT_VERSION "2.0.1")
+
+# Add options
+option(BUILD_TESTING "Build the testing tree." ON)
+option(ENABLE_DEBUG "Enable debug" OFF)
+
+# Include the src directory which contains the main plugin CMakeLists.txt
+add_subdirectory(src)
+
+# Only add tests if BUILD_TESTING is enabled
+if(BUILD_TESTING)
+    enable_testing()
+    add_subdirectory(tests)
+endif()

@@ -1,6 +1,7 @@
 #!/bin/bash
 
+krunner_version=$(krunner --version | grep -oP "(?<=krunner )\d+")
 if pgrep -x krunner > /dev/null
 then
-    killall krunner
+    kquitapp$krunner_version krunner
 fi

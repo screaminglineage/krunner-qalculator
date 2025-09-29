@@ -47,6 +47,19 @@ install(FILES manifest.json DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/qt6/plugins/
 
 # Clear KRunner cache after installation
 install(CODE "
-    execute_process(COMMAND killall krunner)
-    execute_process(COMMAND kstart6 krunner)
+    execute_process(COMMAND krunner --version OUTPUT_VARIABLE KRUNNER_VERSION_OUTPUT)
+    string(REGEX MATCH \"krunner ([0-9]+)\" KRUNNER_VERSION_MATCH \"\${KRUNNER_VERSION_OUTPUT}\")
+    set(KRUNNER_VERSION \"\${CMAKE_MATCH_1}\")
+    if(KRUNNER_VERSION STREQUAL \"6\")
+        execute_process(COMMAND kquitapp6 krunner)
+        execute_process(COMMAND kstart6 krunner)
+    else()
+        execute_process(COMMAND krunner --replace)
+    endif()
 ")
+
+# Enable testing if not disabled
+if(BUILD_TESTING)
+    enable_testing()
+    add_subdirectory(../tests ../tests)
+endif()
