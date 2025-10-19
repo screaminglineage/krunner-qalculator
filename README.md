@@ -3,7 +3,7 @@
 This repo contains a modified version of the [KRunner Qalculator Plugin](https://github.com/kas-cor/krunner-qalculator) with a
 couple of simple changes. 
 
-- No longer updates the exchange rates on each keypress and only updates them when the plugin is initialized
+- No longer updates the exchange rates on each keypress but only when the plugin is initialized
 - Allows for `$` in the query to support currency conversion (Eg. `$12` works now)
 
 The rest of this file is the original README.md.
