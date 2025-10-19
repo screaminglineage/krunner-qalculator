@@ -124,17 +124,17 @@ QString QalculatorRunner::calculate(const QString &term)
 {
     // Sanitize input to prevent command injection
     // Only allow characters typically used in mathematical expressions
-    // Remove any potentially dangerous characters like ;, &, |, $, etc.
+    // Remove any potentially dangerous characters like ;, &, | etc.
     // Keep only numbers, letters, and mathematical operators
     // Check for potentially dangerous command injection patterns
     if (term.contains(QStringLiteral(";")) || 
         term.contains(QStringLiteral("&&")) || 
         term.contains(QStringLiteral("|")) || 
-        term.contains(QRegularExpression(QStringLiteral("\\$\\(|`")))) {
+        term.contains(QRegularExpression(QStringLiteral("\\(|`")))) {
         return QString();
     }
     
-    QRegularExpression allowedCharsValidator(QStringLiteral("^[0-9a-zA-Z+\\-*/()=.%,\\[\\]{}<>'\"`!?:#@_\\s]+$"));
+    QRegularExpression allowedCharsValidator(QStringLiteral("^[0-9a-zA-Z+\\-*/()=.%,\\[\\]{}<>'\"`!?:#$@_\\s]+$"));
     if (!allowedCharsValidator.match(term).hasMatch()) {
         // If the query contains potentially dangerous characters, return empty
         return QString();
