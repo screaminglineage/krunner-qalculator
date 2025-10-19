@@ -42,6 +42,9 @@ public Q_SLOTS:
     void match(KRunner::RunnerContext &context) override;
     void run(const KRunner::RunnerContext &context, const KRunner::QueryMatch &match) override;
 
+protected:
+    void init() override;
+
 private:
     QString calculate(const QString &term);
     bool copyToClipboard(const QString &text);

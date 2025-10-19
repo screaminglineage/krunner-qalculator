@@ -27,6 +27,7 @@
 #include <QProcess>
 #include <QRegularExpression>
 #include <KLocalizedString>
+#include <qstringliteral.h>
 
 QalculatorRunner::QalculatorRunner(QObject* parent, const KPluginMetaData &pluginMetaData)
     : KRunner::AbstractRunner(parent, pluginMetaData)
@@ -36,6 +37,34 @@ QalculatorRunner::QalculatorRunner(QObject* parent, const KPluginMetaData &plugi
 
 QalculatorRunner::~QalculatorRunner()
 {
+}
+
+void QalculatorRunner::init() {
+    QProcess qalculateProcess;
+    QStringList args;
+    // Update exchange rates on init
+    // The `1` is a dummy value to ensure `qalc` quits afterwards
+    args << QStringLiteral("-e") << QStringLiteral("1");
+    qalculateProcess.start(QStringLiteral("qalc"), args);
+
+    if (!qalculateProcess.waitForStarted()) {
+        // Log error if process fails to start
+        qWarning() << "Failed to start qalc process";
+        return;
+    }
+
+    if (!qalculateProcess.waitForFinished()) {
+        // Log error if process doesn't finish
+        qWarning() << "qalc process didn't finish within timeout";
+        return;
+    }
+
+    if (qalculateProcess.exitCode() != 0) {
+        // Log error if process exits with non-zero code
+        QString errorOutput = QString::fromUtf8(qalculateProcess.readAllStandardError());
+        qWarning() << "qalc exited with code:" << qalculateProcess.exitCode() << "Error:" << errorOutput;
+        return;
+    }
 }
 
 void QalculatorRunner::match(KRunner::RunnerContext &context)
@@ -114,7 +143,6 @@ QString QalculatorRunner::calculate(const QString &term)
     QProcess qalculateProcess;
     QStringList args;
     args << QStringLiteral("--defaults")
-         << QStringLiteral("-e")
          << QStringLiteral("-t")
          << QStringLiteral("+u8")
          << term;
