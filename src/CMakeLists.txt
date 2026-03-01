@@ -24,7 +24,7 @@ include(KDECompilerSettings NO_POLICY_SCOPE)
 include(ECMQtDeclareLoggingCategory)
 
 find_package(Qt6 CONFIG REQUIRED COMPONENTS Core Widgets)
-find_package(KF6 REQUIRED COMPONENTS Runner I18n CoreAddons)
+find_package(KF6 REQUIRED COMPONENTS Runner I18n CoreAddons Config)
 
 add_definitions("-DPROJECT_VERSION=\"${PROJECT_VERSION}\"")
 
